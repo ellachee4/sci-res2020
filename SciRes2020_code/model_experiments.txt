@@ -1,0 +1,770 @@
+FROM ARRHYTHMIA DB:
+Loaded 2820 arrhythmia pieces
+Loaded 2820 arrhythmia annotations
+Found 8 afib pieces
+Found 25 afib and other pieces
+Found 1048 pieces with other arrhythmia
+Found 1739 normal pieces
+Found 60 bad pieces
+FROM AFIB DB:
+Loaded 27510 total afib pieces
+Loaded 27510 afib annotations
+Found 11226 afib pieces
+Found 37 afib and other pieces
+Found 188 pieces with other arrhythmia
+Found 16059 normal pieces
+FROM BOTH AFIB DB and ARRHYTHMIA DB:
+Found 11234 afib pieces
+Found 62 afib and other pieces
+Found 1236 other pieces
+Found 17798 normal pieces
+30330 remaining pieces
+Found 19034 total not AFIB pieces
+Found 11296 total AFIB pieces
+
+# TEST 1
+
+model_1 = Sequential()
+model_1.add(Conv1D(filters=100, kernel_size=18, activation='relu', input_shape=(10800, 1)))
+model_1.add(Conv1D(100, 5, activation='relu'))
+model_1.add(MaxPooling1D(3))
+model_1.add(Conv1D(160, 10, activation='relu'))
+model_1.add(Conv1D(160, 10, activation='relu'))
+model_1.add(GlobalAveragePooling1D())
+model_1.add(Dropout(0.5))
+model_1.add(Dense(activation='softmax', units=2))
+print(model_1.summary())
+
+callbacks_list = [
+    ModelCheckpoint(
+        filepath='best_model.{epoch:02d}-{val_loss:.2f}.h5',
+        monitor='val_loss', save_best_only=True),
+    EarlyStopping(monitor='acc', patience=1)
+]
+model_1.compile(loss='binary_crossentropy',
+                optimizer='adam', metrics=['accuracy'])
+
+history = model_1.fit(train_set_pieces,
+                      train_set_targets_one_hot,
+                      batch_size=32,
+                      epochs=1,
+                      callbacks=callbacks_list,
+                      validation_split=0.2,
+                      verbose=1)
+
+print(history)
+
+Model: "sequential"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv1d (Conv1D)              (None, 10783, 100)        1900      
+_________________________________________________________________
+conv1d_1 (Conv1D)            (None, 10779, 100)        50100     
+_________________________________________________________________
+max_pooling1d (MaxPooling1D) (None, 3593, 100)         0         
+_________________________________________________________________
+conv1d_2 (Conv1D)            (None, 3584, 160)         160160    
+_________________________________________________________________
+conv1d_3 (Conv1D)            (None, 3575, 160)         256160    
+_________________________________________________________________
+global_average_pooling1d (Gl (None, 160)               0         
+_________________________________________________________________
+dropout (Dropout)            (None, 160)               0         
+_________________________________________________________________
+dense (Dense)                (None, 2)                 322       
+=================================================================
+Total params: 468,642
+Trainable params: 468,642
+Non-trainable params: 0
+_________________________________________________________________
+None
+607/607 [==============================] - ETA: 0s - loss: 0.5089 - accuracy: 0.7579WARNING:tensorflow:Early stopping conditioned on metric `acc` which is not available. Available metrics are: loss,accuracy,val_loss,val_accuracy
+607/607 [==============================] - 1289s 2s/step - loss: 0.5089 - accuracy: 0.7579 - val_loss: 1.7859 - val_accuracy: 0.5273
+<tensorflow.python.keras.callbacks.History object at 0x14401e3c8>
+
+
+=======================
+# TEST 2
+
+filters = 80
+model_1 = Sequential()
+model_1.add(Conv1D(filters=filters, kernel_size=18, activation='relu', input_shape=(10800, 1)))
+model_1.add(Conv1D(filters, 10, activation='relu'))
+model_1.add(MaxPooling1D(3))
+model_1.add(Conv1D(filters, 10, activation='relu'))
+model_1.add(Conv1D(filters, 10, activation='relu'))
+model_1.add(GlobalAveragePooling1D())
+model_1.add(Dropout(0.5))
+model_1.add(Dense(activation='softmax', units=2))
+print(model_1.summary())
+
+callbacks_list = [
+    ModelCheckpoint(
+        filepath='best_model.{epoch:02d}-{val_loss:.2f}.h5',
+        monitor='val_loss', save_best_only=True),
+    EarlyStopping(monitor='acc', patience=1)
+]
+model_1.compile(loss='binary_crossentropy',
+                optimizer='adam', metrics=['accuracy'])
+
+history = model_1.fit(train_set_pieces,
+                      train_set_targets_one_hot,
+                      batch_size=24,
+                      epochs=1,
+                      callbacks=callbacks_list,
+                      validation_split=0.2,
+                      verbose=1)
+
+print(history)
+
+Model: "sequential"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv1d (Conv1D)              (None, 10783, 80)         1520      
+_________________________________________________________________
+conv1d_1 (Conv1D)            (None, 10774, 80)         64080     
+_________________________________________________________________
+max_pooling1d (MaxPooling1D) (None, 3591, 80)          0         
+_________________________________________________________________
+conv1d_2 (Conv1D)            (None, 3582, 80)          64080     
+_________________________________________________________________
+conv1d_3 (Conv1D)            (None, 3573, 80)          64080     
+_________________________________________________________________
+global_average_pooling1d (Gl (None, 80)                0         
+_________________________________________________________________
+dropout (Dropout)            (None, 80)                0         
+_________________________________________________________________
+dense (Dense)                (None, 2)                 162       
+=================================================================
+Total params: 193,922
+Trainable params: 193,922
+Non-trainable params: 0
+_________________________________________________________________
+None
+809/809 [==============================] - ETA: 0s - loss: 0.5129 - accuracy: 0.7574
+
+
+=============================
+# TEST 3
+
+filters = 20
+kernel_size = 360
+model_1 = Sequential()
+model_1.add(Conv1D(filters=filters, kernel_size=kernel_size, activation='relu', input_shape=(10800, 1)))
+model_1.add(Conv1D(filters, kernel_size, activation='relu'))
+model_1.add(MaxPooling1D(3))
+model_1.add(Conv1D(filters, kernel_size, activation='relu'))
+model_1.add(Conv1D(filters, kernel_size, activation='relu'))
+model_1.add(GlobalAveragePooling1D())
+model_1.add(Dropout(0.5))
+model_1.add(Dense(activation='softmax', units=2))
+print(model_1.summary())
+
+callbacks_list = [
+    ModelCheckpoint(
+        filepath='best_model.{epoch:02d}-{val_loss:.2f}.h5',
+        monitor='val_loss', save_best_only=True),
+    EarlyStopping(monitor='acc', patience=1)
+]
+model_1.compile(loss='binary_crossentropy',
+                optimizer='adam', metrics=['accuracy'])
+
+history = model_1.fit(train_set_pieces,
+                      train_set_targets_one_hot,
+                      batch_size=24,
+                      epochs=1,
+                      callbacks=callbacks_list,
+                      validation_split=0.2,
+                      verbose=1)
+
+
+Model: "sequential"
+
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv1d (Conv1D)              (None, 10441, 20)         7220      
+_________________________________________________________________
+conv1d_1 (Conv1D)            (None, 10082, 20)         144020    
+_________________________________________________________________
+max_pooling1d (MaxPooling1D) (None, 3360, 20)          0         
+_________________________________________________________________
+conv1d_2 (Conv1D)            (None, 3001, 20)          144020    
+_________________________________________________________________
+conv1d_3 (Conv1D)            (None, 2642, 20)          144020    
+_________________________________________________________________
+global_average_pooling1d (Gl (None, 20)                0         
+_________________________________________________________________
+dropout (Dropout)            (None, 20)                0         
+_________________________________________________________________
+dense (Dense)                (None, 2)                 42        
+=================================================================
+Total params: 439,322
+Trainable params: 439,322
+Non-trainable params: 0
+_________________________________________________________________
+None
+809/809 [==============================] - ETA: 0s - loss: 0.6653 - accuracy: 0.6281     
+
+
+=====================
+# TEST 4
+
+filters = 100
+kernel_size = 360
+model_1 = Sequential()
+model_1.add(Conv1D(filters=filters, kernel_size=kernel_size, activation='relu', input_shape=(10800, 1)))
+model_1.add(Conv1D(filters, kernel_size, activation='relu'))
+model_1.add(MaxPooling1D(3))
+model_1.add(Conv1D(filters, kernel_size, activation='relu'))
+model_1.add(Conv1D(filters, kernel_size, activation='relu'))
+model_1.add(GlobalAveragePooling1D())
+model_1.add(Dropout(0.5))
+model_1.add(Dense(activation='softmax', units=2))
+print(model_1.summary())
+
+callbacks_list = [
+    ModelCheckpoint(
+        filepath='best_model.{epoch:02d}-{val_loss:.2f}.h5',
+        monitor='val_loss', save_best_only=True),
+    EarlyStopping(monitor='acc', patience=1)
+]
+model_1.compile(loss='binary_crossentropy',
+                optimizer='adam', metrics=['accuracy'])
+
+history = model_1.fit(train_set_pieces,
+                      train_set_targets_one_hot,
+                      batch_size=24,
+                      epochs=1,
+                      callbacks=callbacks_list,
+                      validation_split=0.2,
+                      verbose=1)
+
+
+Model: "sequential"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv1d (Conv1D)              (None, 10441, 100)        36100     
+_________________________________________________________________
+conv1d_1 (Conv1D)            (None, 10082, 100)        3600100   
+_________________________________________________________________
+max_pooling1d (MaxPooling1D) (None, 3360, 100)         0         
+_________________________________________________________________
+conv1d_2 (Conv1D)            (None, 3001, 100)         3600100   
+_________________________________________________________________
+conv1d_3 (Conv1D)            (None, 2642, 100)         3600100   
+_________________________________________________________________
+global_average_pooling1d (Gl (None, 100)               0         
+_________________________________________________________________
+dropout (Dropout)            (None, 100)               0         
+_________________________________________________________________
+dense (Dense)                (None, 2)                 202       
+=================================================================
+Total params: 10,836,602
+Trainable params: 10,836,602
+Non-trainable params: 0
+_________________________________________________________________
+None
+809/809 [==============================] - ETA: 0s - loss: 5.6566 - accuracy: 0.6307 WARNING:tensorflow:Early stopping conditioned on metric `acc` which is not available. Available metrics are: loss,accuracy,val_loss,val_accuracy
+809/809 [==============================] - 32093s 40s/step - loss: 5.6566 - accuracy: 0.6307 - val_loss: 5.9793 - val_accuracy: 0.6101
+
+
+==================
+# TEST 5
+
+filters = 100
+kernel_size = 9
+model_1 = Sequential()
+model_1.add(Conv1D(filters=filters, kernel_size=kernel_size, activation='relu', input_shape=(10800, 1)))
+model_1.add(Conv1D(filters, kernel_size, activation='relu'))
+model_1.add(MaxPooling1D(3))
+model_1.add(Conv1D(filters, kernel_size, activation='relu'))
+model_1.add(Conv1D(filters, kernel_size, activation='relu'))
+model_1.add(GlobalAveragePooling1D())
+model_1.add(Dropout(0.5))
+model_1.add(Dense(activation='softmax', units=2))
+print(model_1.summary())
+
+callbacks_list = [
+    ModelCheckpoint(
+        filepath='best_model.{epoch:02d}-{val_loss:.2f}.h5',
+        monitor='val_loss', save_best_only=True),
+    EarlyStopping(monitor='acc', patience=1)
+]
+model_1.compile(loss='binary_crossentropy',
+                optimizer='adam', metrics=['accuracy'])
+
+history = model_1.fit(train_set_pieces,
+                      train_set_targets_one_hot,
+                      batch_size=24,
+                      epochs=1,
+                      callbacks=callbacks_list,
+                      validation_split=0.2,
+                      verbose=1)
+
+Model: "sequential"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv1d (Conv1D)              (None, 10792, 100)        1000      
+_________________________________________________________________
+conv1d_1 (Conv1D)            (None, 10784, 100)        90100     
+_________________________________________________________________
+max_pooling1d (MaxPooling1D) (None, 3594, 100)         0         
+_________________________________________________________________
+conv1d_2 (Conv1D)            (None, 3586, 100)         90100     
+_________________________________________________________________
+conv1d_3 (Conv1D)            (None, 3578, 100)         90100     
+_________________________________________________________________
+global_average_pooling1d (Gl (None, 100)               0         
+_________________________________________________________________
+dropout (Dropout)            (None, 100)               0         
+_________________________________________________________________
+dense (Dense)                (None, 2)                 202       
+=================================================================
+Total params: 271,502
+Trainable params: 271,502
+Non-trainable params: 0
+_________________________________________________________________
+None
+809/809 [==============================] - ETA: 0s - loss: 0.5136 - accuracy: 0.7567WARNING:tensorflow:Early stopping conditioned on metric `acc` which is not available. Available metrics are: loss,accuracy,val_loss,val_accuracy
+809/809 [==============================] - 1183s 1s/step - loss: 0.5136 - accuracy: 0.7567 - val_loss: 1.6341 - val_accuracy: 0.5650
+
+=================
+# TEST 6
+
+filters = 200
+kernel_size = 9
+model_1 = Sequential()
+model_1.add(Conv1D(filters=filters, kernel_size=kernel_size, activation='relu', input_shape=(10800, 1)))
+model_1.add(Conv1D(filters, kernel_size, activation='relu'))
+model_1.add(MaxPooling1D(3))
+model_1.add(Conv1D(filters, kernel_size, activation='relu'))
+model_1.add(Conv1D(filters, kernel_size, activation='relu'))
+model_1.add(GlobalAveragePooling1D())
+model_1.add(Dropout(0.5))
+model_1.add(Dense(activation='softmax', units=2))
+print(model_1.summary())
+
+callbacks_list = [
+    ModelCheckpoint(
+        filepath='best_model.{epoch:02d}-{val_loss:.2f}.h5',
+        monitor='val_loss', save_best_only=True),
+    EarlyStopping(monitor='acc', patience=1)
+]
+model_1.compile(loss='binary_crossentropy',
+                optimizer='adam', metrics=['accuracy'])
+
+history = model_1.fit(train_set_pieces,
+                      train_set_targets_one_hot,
+                      batch_size=24,
+                      epochs=1,
+                      callbacks=callbacks_list,
+                      validation_split=0.2,
+                      verbose=1)
+
+Model: "sequential"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv1d (Conv1D)              (None, 10792, 200)        2000      
+_________________________________________________________________
+conv1d_1 (Conv1D)            (None, 10784, 200)        360200    
+_________________________________________________________________
+max_pooling1d (MaxPooling1D) (None, 3594, 200)         0         
+_________________________________________________________________
+conv1d_2 (Conv1D)            (None, 3586, 200)         360200    
+_________________________________________________________________
+conv1d_3 (Conv1D)            (None, 3578, 200)         360200    
+_________________________________________________________________
+global_average_pooling1d (Gl (None, 200)               0         
+_________________________________________________________________
+dropout (Dropout)            (None, 200)               0         
+_________________________________________________________________
+dense (Dense)                (None, 2)                 402       
+=================================================================
+Total params: 1,083,002
+Trainable params: 1,083,002
+Non-trainable params: 0
+_________________________________________________________________
+None
+809/809 [==============================] - ETA: 0s - loss: 0.5158 - accuracy: 0.7511WARNING:tensorflow:Early stopping conditioned on metric `acc` which is not available. Available metrics are: loss,accuracy,val_loss,val_accuracy
+809/809 [==============================] - 3000s 4s/step - loss: 0.5158 - accuracy: 0.7511 - val_loss: 1.7267 - val_accuracy: 0.4801
+
+==========================
+# TEST 7
+# best accuracy so far
+
+filters = 100
+kernel_size = 36
+model_1 = Sequential()
+model_1.add(Conv1D(filters=filters, kernel_size=kernel_size, activation='relu', input_shape=(10800, 1)))
+model_1.add(Conv1D(filters, kernel_size, activation='relu'))
+model_1.add(MaxPooling1D(3))
+model_1.add(Conv1D(filters, kernel_size, activation='relu'))
+model_1.add(Conv1D(filters, kernel_size, activation='relu'))
+model_1.add(GlobalAveragePooling1D())
+model_1.add(Dropout(0.5))
+model_1.add(Dense(activation='softmax', units=2))
+print(model_1.summary())
+
+callbacks_list = [
+    ModelCheckpoint(
+        filepath='best_model.{epoch:02d}-{val_loss:.2f}.h5',
+        monitor='val_loss', save_best_only=True),
+    EarlyStopping(monitor='acc', patience=1)
+]
+model_1.compile(loss='binary_crossentropy',
+                optimizer='adam', metrics=['accuracy'])
+
+history = model_1.fit(train_set_pieces,
+                      train_set_targets_one_hot,
+                      batch_size=24,
+                      epochs=1,
+                      callbacks=callbacks_list,
+                      validation_split=0.2,
+                      verbose=1)
+
+print(history)
+
+Model: "sequential"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv1d (Conv1D)              (None, 10765, 100)        3700      
+_________________________________________________________________
+conv1d_1 (Conv1D)            (None, 10730, 100)        360100    
+_________________________________________________________________
+max_pooling1d (MaxPooling1D) (None, 3576, 100)         0         
+_________________________________________________________________
+conv1d_2 (Conv1D)            (None, 3541, 100)         360100    
+_________________________________________________________________
+conv1d_3 (Conv1D)            (None, 3506, 100)         360100    
+_________________________________________________________________
+global_average_pooling1d (Gl (None, 100)               0         
+_________________________________________________________________
+dropout (Dropout)            (None, 100)               0         
+_________________________________________________________________
+dense (Dense)                (None, 2)                 202       
+=================================================================
+Total params: 1,084,202
+Trainable params: 1,084,202
+Non-trainable params: 0
+_________________________________________________________________
+None
+809/809 [==============================] - ETA: 0s - loss: 0.3520 - accuracy: 0.8452 WARNING:tensorflow:Early stopping conditioned on metric `acc` which is not available. Available metrics are: loss,accuracy,val_loss,val_accuracy
+809/809 [==============================] - 3403s 4s/step - loss: 0.3520 - accuracy: 0.8452 - val_loss: 0.9121 - val_accuracy: 0.7229
+
+===============
+# TEST 8
+
+filters = 100
+kernel_size = 36
+model_1 = Sequential()
+model_1.add(Conv1D(filters=filters, kernel_size=kernel_size, activation='relu', input_shape=(10800, 1)))
+model_1.add(Conv1D(filters, kernel_size, activation='relu'))
+model_1.add(MaxPooling1D(3))
+model_1.add(Conv1D(filters, kernel_size, activation='relu'))
+model_1.add(Conv1D(filters, kernel_size, activation='relu'))
+model_1.add(GlobalAveragePooling1D())
+model_1.add(Dropout(0.5))
+model_1.add(Dense(activation='softmax', units=2))
+print(model_1.summary())
+
+callbacks_list = [
+    ModelCheckpoint(
+        filepath='best_model.{epoch:02d}-{val_loss:.2f}.h5',
+        monitor='val_loss', save_best_only=True),
+    EarlyStopping(monitor='acc', patience=1)
+]
+model_1.compile(loss='binary_crossentropy',
+                optimizer='adam', metrics=['accuracy'])
+
+history = model_1.fit(train_set_pieces,
+                      train_set_targets_one_hot,
+                      batch_size=32,
+                      epochs=1,
+                      callbacks=callbacks_list,
+                      validation_split=0.2,
+                      verbose=1)
+
+print(history)
+
+Model: "sequential"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv1d (Conv1D)              (None, 10765, 100)        3700      
+_________________________________________________________________
+conv1d_1 (Conv1D)            (None, 10730, 100)        360100    
+_________________________________________________________________
+max_pooling1d (MaxPooling1D) (None, 3576, 100)         0         
+_________________________________________________________________
+conv1d_2 (Conv1D)            (None, 3541, 100)         360100    
+_________________________________________________________________
+conv1d_3 (Conv1D)            (None, 3506, 100)         360100    
+_________________________________________________________________
+global_average_pooling1d (Gl (None, 100)               0         
+_________________________________________________________________
+dropout (Dropout)            (None, 100)               0         
+_________________________________________________________________
+dense (Dense)                (None, 2)                 202       
+=================================================================
+Total params: 1,084,202
+Trainable params: 1,084,202
+Non-trainable params: 0
+_________________________________________________________________
+None
+580/607 [===========================>..] - ETA: 2:26 - loss: 0.4071 - accuracy: 0.8067 
+
+============
+#TEST 9
+
+filters = 100
+kernel_size = 36
+model_1 = Sequential()
+model_1.add(Conv1D(filters=filters, kernel_size=kernel_size, activation='relu', input_shape=(10800, 1)))
+model_1.add(Conv1D(filters, kernel_size, activation='relu'))
+model_1.add(MaxPooling1D(3))
+model_1.add(Conv1D(filters, kernel_size, activation='relu'))
+model_1.add(Conv1D(filters, kernel_size, activation='relu'))
+model_1.add(GlobalAveragePooling1D())
+model_1.add(Dropout(0.5))
+model_1.add(Dense(activation='softmax', units=2))
+print(model_1.summary())
+
+callbacks_list = [
+    ModelCheckpoint(
+        filepath='best_model.{epoch:02d}-{val_loss:.2f}.h5',
+        monitor='val_loss', save_best_only=True),
+    EarlyStopping(monitor='acc', patience=1)
+]
+model_1.compile(loss='binary_crossentropy',
+                optimizer='adam', metrics=['accuracy'])
+
+history = model_1.fit(train_set_pieces,
+                      train_set_targets_one_hot,
+                      batch_size=16,
+                      epochs=1,
+                      callbacks=callbacks_list,
+                      validation_split=0,
+                      verbose=1)
+
+Model: "sequential"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv1d (Conv1D)              (None, 10765, 100)        3700      
+_________________________________________________________________
+conv1d_1 (Conv1D)            (None, 10730, 100)        360100    
+_________________________________________________________________
+max_pooling1d (MaxPooling1D) (None, 3576, 100)         0         
+_________________________________________________________________
+conv1d_2 (Conv1D)            (None, 3541, 100)         360100    
+_________________________________________________________________
+conv1d_3 (Conv1D)            (None, 3506, 100)         360100    
+_________________________________________________________________
+global_average_pooling1d (Gl (None, 100)               0         
+_________________________________________________________________
+dropout (Dropout)            (None, 100)               0         
+_________________________________________________________________
+dense (Dense)                (None, 2)                 202       
+=================================================================
+Total params: 1,084,202
+Trainable params: 1,084,202
+Non-trainable params: 0
+_________________________________________________________________
+None
+1214/1214 [==============================] - ETA: 0s - loss: 0.4852 - accuracy: 0.7796WARNING:tensorflow:Early stopping conditioned on metric `acc` which is not available. Available metrics are: loss,accuracy,val_loss,val_accuracy
+1214/1214 [==============================] - 3458s 3s/step - loss: 0.4852 - accuracy: 0.7796 - val_loss: 1.6316 - val_accuracy: 0.6025
+
+===================
+# Cross-Validation (only 1 fold)
+
+Model: "sequential"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv1d (Conv1D)              (None, 10765, 100)        3700      
+_________________________________________________________________
+conv1d_1 (Conv1D)            (None, 10730, 100)        360100    
+_________________________________________________________________
+max_pooling1d (MaxPooling1D) (None, 3576, 100)         0         
+_________________________________________________________________
+conv1d_2 (Conv1D)            (None, 3541, 100)         360100    
+_________________________________________________________________
+conv1d_3 (Conv1D)            (None, 3506, 100)         360100    
+_________________________________________________________________
+global_average_pooling1d (Gl (None, 100)               0         
+_________________________________________________________________
+dropout (Dropout)            (None, 100)               0         
+_________________________________________________________________
+dense (Dense)                (None, 1)                 101       
+=================================================================
+Total params: 1,084,101
+Trainable params: 1,084,101
+Non-trainable params: 0
+_________________________________________________________________
+None
+WARNING:tensorflow:Early stopping conditioned on metric `acc` which is not available. Available metrics are: loss,accuracy,precision,recall,true_negatives,true_positives,false_negatives,false_positives,auc
+<tensorflow.python.keras.callbacks.History object at 0x143760e80>
+Test loss: 0.1694621443748474
+Test accuracy: 0.9464226961135864
+nFiles/lib/python/debugpy/launcher" 49332 -- "/Users/MinAndKatie 1/Desktop/scires/scires-1.py" sr/bin/python3 "/Users/MinAndKatie 1/.vscode/extensions/ms-python.python-2020.8.103604/pytho 
+Got 30420 pieces
+Got 30420 pieces targets
+30330 remaining pieces
+train_set_pieces shape:  (24264, 10800, 1)
+train_set_targets shape:  (24264,)
+test_set_pieces shape:  (6066, 10800, 1)
+test_set_targets shape:  (6066,)
+2020-09-01 17:30:00.925629: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN)to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2020-09-01 17:30:01.016046: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x7fdb26d64a00 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2020-09-01 17:30:01.016068: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+Model: "sequential"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv1d (Conv1D)              (None, 10765, 100)        3700      
+_________________________________________________________________
+conv1d_1 (Conv1D)            (None, 10730, 100)        360100    
+_________________________________________________________________
+max_pooling1d (MaxPooling1D) (None, 3576, 100)         0         
+_________________________________________________________________
+conv1d_2 (Conv1D)            (None, 3541, 100)         360100    
+_________________________________________________________________
+conv1d_3 (Conv1D)            (None, 3506, 100)         360100    
+_________________________________________________________________
+global_average_pooling1d (Gl (None, 100)               0         
+_________________________________________________________________
+dropout (Dropout)            (None, 100)               0         
+_________________________________________________________________
+dense (Dense)                (None, 1)                 101       
+=================================================================
+Total params: 1,084,101
+Trainable params: 1,084,101
+Non-trainable params: 0
+_________________________________________________________________
+None
+{'loss': [0.4574001431465149], 'accuracy': [0.7772420048713684], 'precision': [0.785725474357605], 'recall': [0.5543286204338074], 'true_negatives': [13839.0], 'true_positives': [5020.0], 'false_negatives': [4036.0], 'false_positives': [1369.0], 'auc': [0.8575282692909241]}
+Test loss: 0.20396538078784943
+Test accuracy: 0.929607629776001
+All results: [0.20396538078784943, 0.929607629776001, 0.8816841840744019, 0.9348214268684387, 3545.0, 2094.0, 146.0, 281.0, 0.9745355844497681]
+
+# Five-fold cross validation
+
+1: Test metrics: [0.21399036049842834, 0.9345532655715942, 0.9497041702270508, 0.8671769499778748, 3743.0, 1926.0, 295.0, 102.0, 0.9743053317070007] (specificity = 0.973472042)
+2: Test metrics: [0.41429972648620605, 0.841081440448761, 0.7842881679534912, 0.794634997844696, 3295.0, 1807.0, 467.0, 497.0, 0.9077514410018921] (specificity = 0.86893459915)
+3: Test metrics: [0.19031643867492676, 0.9329047203063965, 0.9504249095916748, 0.8695464134216309, 3646.0, 2013.0, 302.0, 105.0, 0.9803526401519775] (specificity = 0.97200746467)
+4: Test metrics: [0.15137286484241486, 0.9470821022987366, 0.947706401348114, 0.9089309573173523, 3679.0, 2066.0, 207.0, 114.0, 0.982365608215332] (specificity = 0.96994463485)
+5: Test metrics: [0.4388442635536194, 0.7614573240280151, 0.7832840085029602, 0.478535920381546, 3560.0, 1059.0, 1154.0, 293.0, 0.8945285081863403] (specificity = 0.92395535946)
+
+# Five-fold cross validation (w/ 8 more Conv1D layers)
+
+Model: "sequential_2"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv1d_24 (Conv1D)           (None, 10765, 100)        3700      
+_________________________________________________________________
+conv1d_25 (Conv1D)           (None, 10730, 100)        360100    
+_________________________________________________________________
+conv1d_26 (Conv1D)           (None, 10695, 100)        360100    
+_________________________________________________________________
+conv1d_27 (Conv1D)           (None, 10660, 100)        360100    
+_________________________________________________________________
+conv1d_28 (Conv1D)           (None, 10625, 100)        360100    
+_________________________________________________________________
+conv1d_29 (Conv1D)           (None, 10590, 100)        360100    
+_________________________________________________________________
+max_pooling1d_2 (MaxPooling1 (None, 3530, 100)         0         
+_________________________________________________________________
+conv1d_30 (Conv1D)           (None, 3495, 100)         360100    
+_________________________________________________________________
+conv1d_31 (Conv1D)           (None, 3460, 100)         360100    
+_________________________________________________________________
+conv1d_32 (Conv1D)           (None, 3425, 100)         360100    
+_________________________________________________________________
+conv1d_33 (Conv1D)           (None, 3390, 100)         360100    
+_________________________________________________________________
+conv1d_34 (Conv1D)           (None, 3355, 100)         360100    
+_________________________________________________________________
+conv1d_35 (Conv1D)           (None, 3320, 100)         360100    
+_________________________________________________________________
+global_average_pooling1d_2 ( (None, 100)               0         
+_________________________________________________________________
+dropout_2 (Dropout)          (None, 100)               0         
+_________________________________________________________________
+dense_2 (Dense)              (None, 1)                 101       
+=================================================================
+Total params: 3,964,901
+Trainable params: 3,964,901
+Non-trainable params: 0
+_________________________________________________________________
+
+1: Test metrics: [0.6610089540481567, 0.6264424920082092, 0.0, 0.0, 3800.0, 0.0, 2266.0, 0.0, 0.5]
+2: Test metrics: [0.6607688665390015, 0.6271018981933594, 0.0, 0.0, 3804.0, 0.0, 2262.0, 0.0, 0.5]
+3: Test metrics: [0.6638739705085754, 0.6231454014778137, 0.0, 0.0, 3780.0, 0.0, 2286.0, 0.0, 0.5]
+4: Test metrics: [0.6568049192428589, 0.6396307349205017, 0.0, 0.0, 3880.0, 0.0, 2186.0, 0.0, 0.5]
+
+terrible
+
+
+
+TEST 2-FOLD Conv1D
+
+train_set_pieces shape:  (15165, 10800, 1)
+train_set_targets shape:  (15165,)
+test_set_pieces shape:  (15165, 10800, 1)
+test_set_targets shape:  (15165,)
+Model: "sequential_1"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv1d_12 (Conv1D)           (None, 10765, 100)        3700      
+_________________________________________________________________
+conv1d_13 (Conv1D)           (None, 10730, 100)        360100    
+_________________________________________________________________
+conv1d_14 (Conv1D)           (None, 10695, 100)        360100    
+_________________________________________________________________
+conv1d_15 (Conv1D)           (None, 10660, 100)        360100    
+_________________________________________________________________
+conv1d_16 (Conv1D)           (None, 10625, 100)        360100    
+_________________________________________________________________
+conv1d_17 (Conv1D)           (None, 10590, 100)        360100    
+_________________________________________________________________
+max_pooling1d_1 (MaxPooling1 (None, 3530, 100)         0         
+_________________________________________________________________
+conv1d_18 (Conv1D)           (None, 3495, 100)         360100    
+_________________________________________________________________
+conv1d_19 (Conv1D)           (None, 3460, 100)         360100    
+_________________________________________________________________
+conv1d_20 (Conv1D)           (None, 3425, 100)         360100    
+_________________________________________________________________
+conv1d_21 (Conv1D)           (None, 3390, 100)         360100    
+_________________________________________________________________
+conv1d_22 (Conv1D)           (None, 3355, 100)         360100    
+_________________________________________________________________
+conv1d_23 (Conv1D)           (None, 3320, 100)         360100    
+_________________________________________________________________
+global_average_pooling1d_1 ( (None, 100)               0         
+_________________________________________________________________
+dropout_1 (Dropout)          (None, 100)               0         
+_________________________________________________________________
+dense_1 (Dense)              (None, 1)                 101       
+=================================================================
+Total params: 3,964,901
+Trainable params: 3,964,901
+Non-trainable params: 0
+_________________________________________________________________
+None
+WARNING:tensorflow:Early stopping conditioned on metric `acc` which is not available. Available metrics are: loss,accuracy,precision_1,recall_1,true_negatives_1,true_positives_1,false_negatives_1,false_positives_1,auc
+474/474 - 10239s - loss: 0.6876 - accuracy: 0.6265 - precision_1: 0.0000e+00 - recall_1: 0.0000e+00 - true_negatives_1: 9501.0000 - true_positives_1: 0.0000e+00 - false_negatives_1: 5660.0000 - false_positives_1: 4.0000 - auc: 0.4992
+Training metrics: {'loss': [0.687612771987915], 'accuracy': [0.6265084147453308], 'precision_1': [0.0], 'recall_1': [0.0], 'true_negatives_1': [9501.0], 'true_positives_1': [0.0], 'false_negatives_1': [5660.0], 'false_positives_1': [4.0], 'auc': [0.49917685985565186]}
+474/474 - 2383s - loss: 0.6600 - accuracy: 0.6284 - precision_1: 0.0000e+00 - recall_1: 0.0000e+00 - true_negatives_1: 9529.0000 - true_positives_1: 0.0000e+00 - false_negatives_1: 5636.0000 - false_positives_1: 0.0000e+00 - auc: 0.5000
+Test metrics: [0.6600213050842285, 0.6283547878265381, 0.0, 0.0, 9529.0, 0.0, 5636.0, 0.0, 0.5]
+bash-3.2$ 

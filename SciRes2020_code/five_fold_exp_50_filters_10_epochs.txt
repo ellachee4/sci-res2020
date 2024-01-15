@@ -1,0 +1,274 @@
+callbacks_list = [
+#    ModelCheckpoint(
+#        filepath='best_model.{epoch:02d}-{val_loss:.2f}.h5',
+#        monitor='val_loss', save_best_only=True),
+    EarlyStopping(monitor='accuracy', patience=2)
+]
+model_1.compile(loss='binary_crossentropy',
+                optimizer='adam', metrics=['accuracy', Precision(), Recall(), TrueNegatives(), TruePositives(), FalseNegatives(), FalsePositives(), 'AUC'])
+
+history = model_1.fit(train_set_pieces,
+                        train_set_targets,
+                        batch_size=24,
+                        epochs=10,
+                        callbacks=callbacks_list,
+                        validation_split=0,
+                        verbose=2)
+
+bash-3.2$  cd "/Users/MinAndKatie 1/Desktop/scires" ; /usr/bin/env /Library/Developer/CommandLineTools/usr/bin/python3 "/Users/MinAndKatie 1/.vscode/extensions/ms-python.python-2020.10.res-1.py" pythonFiles/lib/python/debugpy/launcher" 64882 -- "/Users/MinAndKatie 1/Desktop/scires/sci 
+Got 30420 pieces
+Got 30420 pieces targets
+30330 remaining pieces
+train_set_pieces shape:  (24264, 10800, 1)
+train_set_targets shape:  (24264,)
+test_set_pieces shape:  (6066, 10800, 1)
+test_set_targets shape:  (6066,)
+2020-11-24 21:33:45.772202: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN)to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2020-11-24 21:33:45.841306: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x7fed9bd59d10 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2020-11-24 21:33:45.841329: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+Model: "sequential"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv1d (Conv1D)              (None, 10765, 50)         1850      
+_________________________________________________________________
+conv1d_1 (Conv1D)            (None, 10730, 50)         90050     
+_________________________________________________________________
+max_pooling1d (MaxPooling1D) (None, 3576, 50)          0         
+_________________________________________________________________
+conv1d_2 (Conv1D)            (None, 3541, 50)          90050     
+_________________________________________________________________
+conv1d_3 (Conv1D)            (None, 3506, 50)          90050     
+_________________________________________________________________
+global_average_pooling1d (Gl (None, 50)                0         
+_________________________________________________________________
+dropout (Dropout)            (None, 50)                0         
+_________________________________________________________________
+dense (Dense)                (None, 1)                 51        
+=================================================================
+Total params: 272,051
+Trainable params: 272,051
+Non-trainable params: 0
+_________________________________________________________________
+None
+Epoch 1/10
+1011/1011 - 1713s - loss: 0.4793 - accuracy: 0.7534 - precision: 0.7914 - recall: 0.4628 - true_negatives: 14081.0000 - true_positives: 4200.0000 - false_negatives: 4876.0000 - false_positives: 1107.0000 - auc: 0.8395
+Epoch 2/10
+1011/1011 - 1703s - loss: 0.1463 - accuracy: 0.9540 - precision: 0.9453 - recall: 0.9310 - true_negatives: 14699.0000 - true_positives: 8450.0000 - false_negatives: 626.0000 - false_positives: 489.0000 - auc: 0.9841
+Epoch 3/10
+1011/1011 - 1670s - loss: 0.1120 - accuracy: 0.9688 - precision: 0.9683 - recall: 0.9477 - true_negatives: 14906.0000 - true_positives: 8601.0000 - false_negatives: 475.0000 - false_positives: 282.0000 - auc: 0.9888
+Epoch 4/10
+1011/1011 - 1669s - loss: 0.0845 - accuracy: 0.9754 - precision: 0.9760 - recall: 0.9579 - true_negatives: 14974.0000 - true_positives: 8694.0000 - false_negatives: 382.0000 - false_positives: 214.0000 - auc: 0.9933
+Epoch 5/10
+1011/1011 - 1670s - loss: 0.0721 - accuracy: 0.9795 - precision: 0.9810 - recall: 0.9639 - true_negatives: 15019.0000 - true_positives: 8748.0000 - false_negatives: 328.0000 - false_positives: 169.0000 - auc: 0.9943
+Epoch 6/10
+1011/1011 - 1660s - loss: 0.0658 - accuracy: 0.9811 - precision: 0.9835 - recall: 0.9657 - true_negatives: 15041.0000 - true_positives: 8765.0000 - false_negatives: 311.0000 - false_positives: 147.0000 - auc: 0.9950
+Epoch 7/10
+1011/1011 - 1660s - loss: 0.0677 - accuracy: 0.9815 - precision: 0.9843 - recall: 0.9658 - true_negatives: 15048.0000 - true_positives: 8766.0000 - false_negatives: 310.0000 - false_positives: 140.0000 - auc: 0.9949
+Epoch 8/10
+1011/1011 - 1646s - loss: 0.0552 - accuracy: 0.9848 - precision: 0.9872 - recall: 0.9719 - true_negatives: 15074.0000 - true_positives: 8821.0000 - false_negatives: 255.0000 - false_positives: 114.0000 - auc: 0.9959
+Epoch 9/10
+1011/1011 - 1651s - loss: 0.0625 - accuracy: 0.9834 - precision: 0.9869 - recall: 0.9686 - true_negatives: 15071.0000 - true_positives: 8791.0000 - false_negatives: 285.0000 - false_positives: 117.0000 - auc: 0.9959
+Training metrics: {'loss': [0.4793224632740021, 0.14630521833896637, 0.11204005032777786, 0.0844668373465538, 0.07211960852146149, 0.0658343955874443, 0.06772322207689285, 0.05520404502749443, 0.06252489984035492], 'accuracy': [0.7534207105636597, 0.9540471434593201, 0.9688014984130859, 0.9754368662834167, 0.9795169830322266, 0.9811242818832397, 0.9814540147781372, 0.9847922921180725, 0.9834322333335876], 'precision': [0.791407585144043, 0.9452958703041077, 0.9682539701461792, 0.9759766459465027, 0.9810474514961243, 0.983505368232727, 0.9842802882194519, 0.9872412085533142, 0.986865758895874], 'recall': [0.4627589285373688, 0.9310268759727478, 0.9476641416549683, 0.95791095495224, 0.9638607501983643, 0.9657338261604309, 0.9658439755439758, 0.971903920173645, 0.968598484992981], 'true_negatives': [14081.0, 14699.0, 14906.0, 14974.0, 15019.0, 15041.0, 15048.0, 15074.0, 15071.0], 'true_positives': [4200.0, 8450.0, 8601.0, 8694.0, 8748.0, 8765.0, 8766.0, 8821.0, 8791.0], 'false_negatives': [4876.0, 626.0, 475.0, 382.0, 328.0, 311.0, 310.0, 255.0, 285.0], 'false_positives': [1107.0, 489.0, 282.0, 214.0, 169.0, 147.0, 140.0, 114.0, 117.0], 'auc': [0.8395336270332336, 0.9840764403343201, 0.9888080358505249, 0.9933335781097412, 0.9943034052848816, 0.9949769973754883, 0.9948820471763611, 0.9959269165992737, 0.9959264397621155]}
+190/190 - 79s - loss: 0.0458 - accuracy: 0.9883 - precision: 0.9860 - recall: 0.9820 - true_negatives: 3815.0000 - true_positives: 2180.0000 - false_negatives: 40.0000 - false_positives: 31.0000 - auc: 0.9970
+Test metrics: [0.045773450285196304, 0.9882954359054565, 0.9859791994094849, 0.9819819927215576, 3815.0, 2180.0, 40.0, 31.0, 0.9970102310180664]
+train_set_pieces shape:  (24264, 10800, 1)
+train_set_targets shape:  (24264,)
+test_set_pieces shape:  (6066, 10800, 1)
+test_set_targets shape:  (6066,)
+Model: "sequential_1"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv1d_4 (Conv1D)            (None, 10765, 50)         1850      
+_________________________________________________________________
+conv1d_5 (Conv1D)            (None, 10730, 50)         90050     
+_________________________________________________________________
+max_pooling1d_1 (MaxPooling1 (None, 3576, 50)          0         
+_________________________________________________________________
+conv1d_6 (Conv1D)            (None, 3541, 50)          90050     
+_________________________________________________________________
+conv1d_7 (Conv1D)            (None, 3506, 50)          90050     
+_________________________________________________________________
+global_average_pooling1d_1 ( (None, 50)                0         
+_________________________________________________________________
+dropout_1 (Dropout)          (None, 50)                0         
+_________________________________________________________________
+dense_1 (Dense)              (None, 1)                 51        
+=================================================================
+Total params: 272,051
+Trainable params: 272,051
+Non-trainable params: 0
+_________________________________________________________________
+None
+Epoch 1/10
+1011/1011 - 1681s - loss: 0.3268 - accuracy: 0.8551 - precision_1: 0.8707 - recall_1: 0.7164 - true_negatives_1: 14293.0000 - true_positives_1: 6456.0000 - false_negatives_1: 2556.0000 - false_positives_1: 959.0000 - auc: 0.9306
+Epoch 2/10
+1011/1011 - 1686s - loss: 0.1059 - accuracy: 0.9682 - precision_1: 0.9658 - recall_1: 0.9481 - true_negatives_1: 14949.0000 - true_positives_1: 8544.0000 - false_negatives_1: 468.0000 - false_positives_1: 303.0000 - auc: 0.9914
+Epoch 3/10
+1011/1011 - 1662s - loss: 0.0841 - accuracy: 0.9775 - precision_1: 0.9747 - recall_1: 0.9644 - true_negatives_1: 15026.0000 - true_positives_1: 8691.0000 - false_negatives_1: 321.0000 - false_positives_1: 226.0000 - auc: 0.9934
+Epoch 4/10
+1011/1011 - 1656s - loss: 0.0724 - accuracy: 0.9810 - precision_1: 0.9808 - recall_1: 0.9677 - true_negatives_1: 15081.0000 - true_positives_1: 8721.0000 - false_negatives_1: 291.0000 - false_positives_1: 171.0000 - auc: 0.9944
+Epoch 5/10
+1011/1011 - 1659s - loss: 0.0668 - accuracy: 0.9826 - precision_1: 0.9843 - recall_1: 0.9687 - true_negatives_1: 15113.0000 - true_positives_1: 8730.0000 - false_negatives_1: 282.0000 - false_positives_1: 139.0000 - auc: 0.9952
+Epoch 6/10
+1011/1011 - 1668s - loss: 0.0587 - accuracy: 0.9840 - precision_1: 0.9849 - recall_1: 0.9717 - true_negatives_1: 15118.0000 - true_positives_1: 8757.0000 - false_negatives_1: 255.0000 - false_positives_1: 134.0000 - auc: 0.9958
+Epoch 7/10
+1011/1011 - 1648s - loss: 0.0577 - accuracy: 0.9849 - precision_1: 0.9858 - recall_1: 0.9734 - true_negatives_1: 15126.0000 - true_positives_1: 8772.0000 - false_negatives_1: 240.0000 - false_positives_1: 126.0000 - auc: 0.9959
+Epoch 8/10
+1011/1011 - 1651s - loss: 0.0563 - accuracy: 0.9843 - precision_1: 0.9850 - recall_1: 0.9724 - true_negatives_1: 15119.0000 - true_positives_1: 8763.0000 - false_negatives_1: 249.0000 - false_positives_1: 133.0000 - auc: 0.9961
+Training metrics: {'loss': [0.32679483294487, 0.10591047257184982, 0.08410437405109406, 0.07244125008583069, 0.06677667051553726, 0.05873363837599754, 0.05766661465167999, 0.05633418262004852], 'accuracy': [0.8551352024078369, 0.9682245254516602, 0.9774563312530518, 0.9809594750404358, 0.9826492071151733, 0.9839680194854736, 0.9849159121513367, 0.9842565059661865], 'precision_1': [0.870667576789856, 0.9657511115074158, 0.9746551513671875, 0.9807692170143127, 0.9843274354934692, 0.9849286079406738, 0.9858394861221313, 0.9850494861602783], 'recall_1': [0.7163781523704529, 0.9480692148208618, 0.9643808007240295, 0.9677097201347351, 0.9687083959579468, 0.9717044234275818, 0.9733688235282898, 0.9723701477050781], 'true_negatives_1': [14293.0, 14949.0, 15026.0, 15081.0, 15113.0, 15118.0, 15126.0, 15119.0], 'true_positives_1': [6456.0, 8544.0, 8691.0, 8721.0, 8730.0, 8757.0, 8772.0, 8763.0], 'false_negatives_1': [2556.0, 468.0, 321.0, 291.0, 282.0, 255.0, 240.0, 249.0], 'false_positives_1': [959.0, 303.0, 226.0, 171.0, 139.0, 134.0, 126.0, 133.0], 'auc': [0.930568516254425, 0.9913806915283203, 0.9934093356132507, 0.9943607449531555, 0.9951664209365845, 0.9958446025848389, 0.9959413409233093, 0.9961134195327759]}
+190/190 - 79s - loss: 0.0532 - accuracy: 0.9857 - precision_1: 0.9786 - recall_1: 0.9834 - true_negatives_1: 3733.0000 - true_positives_1: 2246.0000 - false_negatives_1: 38.0000 - false_positives_1: 49.0000 - auc: 0.9972
+Test metrics: [0.053161364048719406, 0.9856577515602112, 0.9786492586135864, 0.9833624958992004, 3733.0, 2246.0, 38.0, 49.0, 0.9972072839736938]
+train_set_pieces shape:  (24264, 10800, 1)
+train_set_targets shape:  (24264,)
+test_set_pieces shape:  (6066, 10800, 1)
+test_set_targets shape:  (6066,)
+Model: "sequential_2"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv1d_8 (Conv1D)            (None, 10765, 50)         1850      
+_________________________________________________________________
+conv1d_9 (Conv1D)            (None, 10730, 50)         90050     
+_________________________________________________________________
+max_pooling1d_2 (MaxPooling1 (None, 3576, 50)          0         
+_________________________________________________________________
+conv1d_10 (Conv1D)           (None, 3541, 50)          90050     
+_________________________________________________________________
+conv1d_11 (Conv1D)           (None, 3506, 50)          90050     
+_________________________________________________________________
+global_average_pooling1d_2 ( (None, 50)                0         
+_________________________________________________________________
+dropout_2 (Dropout)          (None, 50)                0         
+_________________________________________________________________
+dense_2 (Dense)              (None, 1)                 51        
+=================================================================
+Total params: 272,051
+Trainable params: 272,051
+Non-trainable params: 0
+_________________________________________________________________
+None
+Epoch 1/10
+1011/1011 - 1669s - loss: 0.3788 - accuracy: 0.8251 - precision_2: 0.8411 - recall_2: 0.6533 - true_negatives_2: 14122.0000 - true_positives_2: 5898.0000 - false_negatives_2: 3130.0000 - false_positives_2: 1114.0000 - auc: 0.9063
+Epoch 2/10
+1011/1011 - 1684s - loss: 0.1201 - accuracy: 0.9635 - precision_2: 0.9566 - recall_2: 0.9448 - true_negatives_2: 14849.0000 - true_positives_2: 8530.0000 - false_negatives_2: 498.0000 - false_positives_2: 387.0000 - auc: 0.9888
+Epoch 3/10
+1011/1011 - 1651s - loss: 0.0893 - accuracy: 0.9745 - precision_2: 0.9724 - recall_2: 0.9587 - true_negatives_2: 14990.0000 - true_positives_2: 8655.0000 - false_negatives_2: 373.0000 - false_positives_2: 246.0000 - auc: 0.9927
+Epoch 4/10
+1011/1011 - 1637s - loss: 0.0811 - accuracy: 0.9771 - precision_2: 0.9781 - recall_2: 0.9600 - true_negatives_2: 15042.0000 - true_positives_2: 8667.0000 - false_negatives_2: 361.0000 - false_positives_2: 194.0000 - auc: 0.9935
+Epoch 5/10
+1011/1011 - 1765s - loss: 0.0679 - accuracy: 0.9807 - precision_2: 0.9823 - recall_2: 0.9654 - true_negatives_2: 15079.0000 - true_positives_2: 8716.0000 - false_negatives_2: 312.0000 - false_positives_2: 157.0000 - auc: 0.9948
+Epoch 6/10
+1011/1011 - 1821s - loss: 0.0674 - accuracy: 0.9824 - precision_2: 0.9850 - recall_2: 0.9675 - true_negatives_2: 15103.0000 - true_positives_2: 8735.0000 - false_negatives_2: 293.0000 - false_positives_2: 133.0000 - auc: 0.9949
+Epoch 7/10
+1011/1011 - 1764s - loss: 0.0639 - accuracy: 0.9829 - precision_2: 0.9851 - recall_2: 0.9687 - true_negatives_2: 15104.0000 - true_positives_2: 8745.0000 - false_negatives_2: 283.0000 - false_positives_2: 132.0000 - auc: 0.9958
+Epoch 8/10
+1011/1011 - 1721s - loss: 0.0551 - accuracy: 0.9854 - precision_2: 0.9873 - recall_2: 0.9733 - true_negatives_2: 15123.0000 - true_positives_2: 8787.0000 - false_negatives_2: 241.0000 - false_positives_2: 113.0000 - auc: 0.9959
+Epoch 9/10
+1011/1011 - 1728s - loss: 0.0547 - accuracy: 0.9846 - precision_2: 0.9875 - recall_2: 0.9709 - true_negatives_2: 15125.0000 - true_positives_2: 8765.0000 - false_negatives_2: 263.0000 - false_positives_2: 111.0000 - auc: 0.9966
+Training metrics: {'loss': [0.3788245916366577, 0.12009324133396149, 0.08930442482233047, 0.08109720051288605, 0.06789582222700119, 0.06740930676460266, 0.06392776966094971, 0.055139604955911636, 0.05472796410322189], 'accuracy': [0.8250906467437744, 0.96352618932724, 0.9744889736175537, 0.9771265983581543, 0.9806709289550781, 0.9824431538581848, 0.9828964471817017, 0.9854105114936829, 0.984586238861084], 'precision_2': [0.84112948179245, 0.956599771976471, 0.9723626375198364, 0.9781063199043274, 0.9823058843612671, 0.9850022792816162, 0.9851301312446594, 0.9873033761978149, 0.9874943494796753], 'recall_2': [0.6533008217811584, 0.944838285446167, 0.9586840867996216, 0.9600132703781128, 0.9654408693313599, 0.9675453901290894, 0.9686530828475952, 0.9733052849769592, 0.9708684086799622], 'true_negatives_2': [14122.0, 14849.0, 14990.0, 15042.0, 15079.0, 15103.0, 15104.0, 15123.0, 15125.0], 'true_positives_2': [5898.0, 8530.0, 8655.0, 8667.0, 8716.0, 8735.0, 8745.0, 8787.0, 8765.0], 'false_negatives_2': [3130.0, 498.0, 373.0, 361.0, 312.0, 293.0, 283.0, 241.0, 263.0], 'false_positives_2': [1114.0, 387.0, 246.0, 194.0, 157.0, 133.0, 132.0, 113.0, 111.0], 'auc': [0.9062809348106384, 0.9888228178024292, 0.9926807284355164, 0.993545413017273, 0.9947880506515503, 0.9948822855949402, 0.9957770109176636, 0.9958546161651611, 0.9966287612915039]}
+190/190 - 78s - loss: 0.0506 - accuracy: 0.9871 - precision_2: 0.9854 - recall_2: 0.9802 - true_negatives_2: 3765.0000 - true_positives_2: 2223.0000 - false_negatives_2: 45.0000 - false_positives_2: 33.0000 - auc: 0.9969
+Test metrics: [0.05062630772590637, 0.9871414303779602, 0.9853723645210266, 0.9801587462425232, 3765.0, 2223.0, 45.0, 33.0, 0.9968942403793335]
+train_set_pieces shape:  (24264, 10800, 1)
+train_set_targets shape:  (24264,)
+test_set_pieces shape:  (6066, 10800, 1)
+test_set_targets shape:  (6066,)
+Model: "sequential_3"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv1d_12 (Conv1D)           (None, 10765, 50)         1850      
+_________________________________________________________________
+conv1d_13 (Conv1D)           (None, 10730, 50)         90050     
+_________________________________________________________________
+max_pooling1d_3 (MaxPooling1 (None, 3576, 50)          0         
+_________________________________________________________________
+conv1d_14 (Conv1D)           (None, 3541, 50)          90050     
+_________________________________________________________________
+conv1d_15 (Conv1D)           (None, 3506, 50)          90050     
+_________________________________________________________________
+global_average_pooling1d_3 ( (None, 50)                0         
+_________________________________________________________________
+dropout_3 (Dropout)          (None, 50)                0         
+_________________________________________________________________
+dense_3 (Dense)              (None, 1)                 51        
+=================================================================
+Total params: 272,051
+Trainable params: 272,051
+Non-trainable params: 0
+_________________________________________________________________
+None
+Epoch 1/10
+1011/1011 - 1749s - loss: 0.4017 - accuracy: 0.7984 - precision_3: 0.8479 - recall_3: 0.5605 - true_negatives_3: 14294.0000 - true_positives_3: 5078.0000 - false_negatives_3: 3981.0000 - false_positives_3: 911.0000 - auc: 0.8914
+Epoch 2/10
+1011/1011 - 1730s - loss: 0.1221 - accuracy: 0.9652 - precision_3: 0.9556 - recall_3: 0.9509 - true_negatives_3: 14805.0000 - true_positives_3: 8614.0000 - false_negatives_3: 445.0000 - false_positives_3: 400.0000 - auc: 0.9879
+Epoch 3/10
+1011/1011 - 1679s - loss: 0.0944 - accuracy: 0.9740 - precision_3: 0.9708 - recall_3: 0.9590 - true_negatives_3: 14944.0000 - true_positives_3: 8688.0000 - false_negatives_3: 371.0000 - false_positives_3: 261.0000 - auc: 0.9918
+Epoch 4/10
+1011/1011 - 1710s - loss: 0.0786 - accuracy: 0.9792 - precision_3: 0.9797 - recall_3: 0.9642 - true_negatives_3: 15024.0000 - true_positives_3: 8735.0000 - false_negatives_3: 324.0000 - false_positives_3: 181.0000 - auc: 0.9935
+Epoch 5/10
+1011/1011 - 1699s - loss: 0.0663 - accuracy: 0.9812 - precision_3: 0.9817 - recall_3: 0.9675 - true_negatives_3: 15042.0000 - true_positives_3: 8765.0000 - false_negatives_3: 294.0000 - false_positives_3: 163.0000 - auc: 0.9950
+Epoch 6/10
+1011/1011 - 1717s - loss: 0.0655 - accuracy: 0.9813 - precision_3: 0.9818 - recall_3: 0.9680 - true_negatives_3: 15042.0000 - true_positives_3: 8769.0000 - false_negatives_3: 290.0000 - false_positives_3: 163.0000 - auc: 0.9950
+Epoch 7/10
+1011/1011 - 1699s - loss: 0.0558 - accuracy: 0.9848 - precision_3: 0.9866 - recall_3: 0.9725 - true_negatives_3: 15085.0000 - true_positives_3: 8810.0000 - false_negatives_3: 249.0000 - false_positives_3: 120.0000 - auc: 0.9960
+Epoch 8/10
+1011/1011 - 1893s - loss: 0.0554 - accuracy: 0.9845 - precision_3: 0.9874 - recall_3: 0.9709 - true_negatives_3: 15093.0000 - true_positives_3: 8795.0000 - false_negatives_3: 264.0000 - false_positives_3: 112.0000 - auc: 0.9963
+Training metrics: {'loss': [0.4016576409339905, 0.12212439626455307, 0.09438607096672058, 0.07857246696949005, 0.06632102280855179, 0.06548590213060379, 0.05579056963324547, 0.05537819862365723], 'accuracy': [0.798384428024292, 0.9651747345924377, 0.9739531874656677, 0.9791872501373291, 0.9811655282974243, 0.981330394744873, 0.9847922921180725, 0.9845038056373596], 'precision_3': [0.8478878140449524, 0.9556245803833008, 0.9708347320556641, 0.979699432849884, 0.9817428588867188, 0.981751024723053, 0.9865621328353882, 0.9874256253242493], 'recall_3': [0.5605475306510925, 0.9508776068687439, 0.9590462446212769, 0.964234471321106, 0.9675461053848267, 0.9679876565933228, 0.9725134968757629, 0.9708577394485474], 'true_negatives_3': [14294.0, 14805.0, 14944.0, 15024.0, 15042.0, 15042.0, 15085.0, 15093.0], 'true_positives_3': [5078.0, 8614.0, 8688.0, 8735.0, 8765.0, 8769.0, 8810.0, 8795.0], 'false_negatives_3': [3981.0, 445.0, 371.0, 324.0, 294.0, 290.0, 249.0, 264.0], 'false_positives_3': [911.0, 400.0, 261.0, 181.0, 163.0, 163.0, 120.0, 112.0], 'auc': [0.8913511633872986, 0.9879335761070251, 0.9917789697647095, 0.993501603603363, 0.9949721693992615, 0.9950308203697205, 0.996039092540741, 0.9962865114212036]}
+190/190 - 86s - loss: 0.0566 - accuracy: 0.9829 - precision_3: 0.9903 - recall_3: 0.9629 - true_negatives_3: 3808.0000 - true_positives_3: 2154.0000 - false_negatives_3: 83.0000 - false_positives_3: 21.0000 - auc: 0.9967
+Test metrics: [0.05662314593791962, 0.9828552603721619, 0.9903448224067688, 0.9628967642784119, 3808.0, 2154.0, 83.0, 21.0, 0.9967430830001831]
+train_set_pieces shape:  (24264, 10800, 1)
+train_set_targets shape:  (24264,)
+test_set_pieces shape:  (6066, 10800, 1)
+test_set_targets shape:  (6066,)
+Model: "sequential_4"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv1d_16 (Conv1D)           (None, 10765, 50)         1850      
+_________________________________________________________________
+conv1d_17 (Conv1D)           (None, 10730, 50)         90050     
+_________________________________________________________________
+max_pooling1d_4 (MaxPooling1 (None, 3576, 50)          0         
+_________________________________________________________________
+conv1d_18 (Conv1D)           (None, 3541, 50)          90050     
+_________________________________________________________________
+conv1d_19 (Conv1D)           (None, 3506, 50)          90050     
+_________________________________________________________________
+global_average_pooling1d_4 ( (None, 50)                0         
+_________________________________________________________________
+dropout_4 (Dropout)          (None, 50)                0         
+_________________________________________________________________
+dense_4 (Dense)              (None, 1)                 51        
+=================================================================
+Total params: 272,051
+Trainable params: 272,051
+Non-trainable params: 0
+_________________________________________________________________
+None
+Epoch 1/10
+1011/1011 - 1767s - loss: 0.5670 - accuracy: 0.6819 - precision_4: 0.7606 - recall_4: 0.2091 - true_negatives_4: 14662.0000 - true_positives_4: 1884.0000 - false_negatives_4: 7125.0000 - false_positives_4: 593.0000 - auc: 0.7473
+Epoch 2/10
+1011/1011 - 1702s - loss: 0.1760 - accuracy: 0.9463 - precision_4: 0.9304 - recall_4: 0.9246 - true_negatives_4: 14632.0000 - true_positives_4: 8330.0000 - false_negatives_4: 679.0000 - false_positives_4: 623.0000 - auc: 0.9795
+Epoch 3/10
+1011/1011 - 1716s - loss: 0.1097 - accuracy: 0.9681 - precision_4: 0.9595 - recall_4: 0.9543 - true_negatives_4: 14892.0000 - true_positives_4: 8597.0000 - false_negatives_4: 412.0000 - false_positives_4: 363.0000 - auc: 0.9906
+Epoch 4/10
+1011/1011 - 1749s - loss: 0.1012 - accuracy: 0.9707 - precision_4: 0.9608 - recall_4: 0.9602 - true_negatives_4: 14902.0000 - true_positives_4: 8650.0000 - false_negatives_4: 359.0000 - false_positives_4: 353.0000 - auc: 0.9914
+Epoch 5/10
+1011/1011 - 1738s - loss: 0.0825 - accuracy: 0.9759 - precision_4: 0.9701 - recall_4: 0.9649 - true_negatives_4: 14987.0000 - true_positives_4: 8693.0000 - false_negatives_4: 316.0000 - false_positives_4: 268.0000 - auc: 0.9937
+Epoch 6/10
+1011/1011 - 1687s - loss: 0.0757 - accuracy: 0.9794 - precision_4: 0.9764 - recall_4: 0.9680 - true_negatives_4: 15044.0000 - true_positives_4: 8721.0000 - false_negatives_4: 288.0000 - false_positives_4: 211.0000 - auc: 0.9942
+Epoch 7/10
+1011/1011 - 1715s - loss: 0.0700 - accuracy: 0.9808 - precision_4: 0.9798 - recall_4: 0.9683 - true_negatives_4: 15075.0000 - true_positives_4: 8723.0000 - false_negatives_4: 286.0000 - false_positives_4: 180.0000 - auc: 0.9948
+Epoch 8/10
+1011/1011 - 1706s - loss: 0.0653 - accuracy: 0.9827 - precision_4: 0.9826 - recall_4: 0.9707 - true_negatives_4: 15100.0000 - true_positives_4: 8745.0000 - false_negatives_4: 264.0000 - false_positives_4: 155.0000 - auc: 0.9951
+Epoch 9/10
+1011/1011 - 1703s - loss: 0.0569 - accuracy: 0.9841 - precision_4: 0.9849 - recall_4: 0.9721 - true_negatives_4: 15121.0000 - true_positives_4: 8758.0000 - false_negatives_4: 251.0000 - false_positives_4: 134.0000 - auc: 0.9964
+Epoch 10/10
+1011/1011 - 1715s - loss: 0.0545 - accuracy: 0.9852 - precision_4: 0.9862 - recall_4: 0.9737 - true_negatives_4: 15132.0000 - true_positives_4: 8772.0000 - false_negatives_4: 237.0000 - false_positives_4: 123.0000 - auc: 0.9963
+Training metrics: {'loss': [0.5670047402381897, 0.17600803077220917, 0.10965723544359207, 0.10115190595388412, 0.08245436102151871, 0.07567066699266434, 0.06995858997106552, 0.06529644131660461, 0.05692969262599945, 0.05446252599358559], 'accuracy': [0.6819155812263489, 0.9463402628898621, 0.9680596590042114, 0.9706560969352722, 0.9759314060211182, 0.9794345498085022, 0.9807946085929871, 0.9827316403388977, 0.9841328859329224, 0.9851632118225098], 'precision_4': [0.7605974674224854, 0.9304143786430359, 0.9594866037368774, 0.9607908725738525, 0.9700925946235657, 0.9763770699501038, 0.9797821044921875, 0.9825842976570129, 0.9849302768707275, 0.9861720204353333], 'recall_4': [0.20912420749664307, 0.9246309399604797, 0.9542679786682129, 0.960150957107544, 0.9649239778518677, 0.9680319428443909, 0.9682539701461792, 0.970695972442627, 0.9721390008926392, 0.9736929535865784], 'true_negatives_4': [14662.0, 14632.0, 14892.0, 14902.0, 14987.0, 15044.0, 15075.0, 15100.0, 15121.0, 15132.0], 'true_positives_4': [1884.0, 8330.0, 8597.0, 8650.0, 8693.0, 8721.0, 8723.0, 8745.0, 8758.0, 8772.0], 'false_negatives_4': [7125.0, 679.0, 412.0, 359.0, 316.0, 288.0, 286.0, 264.0, 251.0, 237.0], 'false_positives_4': [593.0, 623.0, 363.0, 353.0, 268.0, 211.0, 180.0, 155.0, 134.0, 123.0], 'auc': [0.7473257780075073, 0.9794720411300659, 0.9906147718429565, 0.9913934469223022, 0.9937009811401367, 0.9942076206207275, 0.9948124289512634, 0.995103657245636, 0.996384859085083, 0.9963089227676392]}
+190/190 - 77s - loss: 0.0507 - accuracy: 0.9865 - precision_4: 0.9902 - recall_4: 0.9738 - true_negatives_4: 3757.0000 - true_positives_4: 2227.0000 - false_negatives_4: 60.0000 - false_positives_4: 22.0000 - auc: 0.9963
+Test metrics: [0.0506889671087265, 0.9864820241928101, 0.9902178645133972, 0.9737647771835327, 3757.0, 2227.0, 60.0, 22.0, 0.9962873458862305]
+bash-3.2$ 
